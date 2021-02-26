@@ -6,13 +6,14 @@ public class CredCont : MonoBehaviour
 {
     // Start is called before the first frame update
     RectTransform rt;
-    int x;
-    int y;
-    int z;
+    int x=0;
+    int y=0;
+    int z=0;
     void Start()
     {
         rt = GetComponent<RectTransform>();
-         NewDirection();
+        StartCoroutine(WaitBeforeRandom());
+        
     }
 
     // Update is called once per frame
@@ -56,6 +57,10 @@ public class CredCont : MonoBehaviour
             y = Random.Range(-1, 1);
         } while (x == 0 && y == 0);
         z = 0;
+    }
+     IEnumerator WaitBeforeRandom() {
+        yield return new WaitForSeconds(6.9f);
+        NewDirection();
     }
 
 }

@@ -13,6 +13,7 @@ public class EnemyCont : MonoBehaviour
     float _speed = 4.0f;
     PlayerCont player;
     Animator anim;
+    AudioSource DeathAudio;
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<PlayerCont>();
@@ -21,6 +22,7 @@ public class EnemyCont : MonoBehaviour
         {
             Debug.LogError("no anim"); 
         }
+        DeathAudio = GameObject.Find("Death").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -43,34 +45,40 @@ public class EnemyCont : MonoBehaviour
         
         if (other.CompareTag("Player"))
         {
-            onContact();
+           
             player.isAlive(); 
+            onContact();
         }
         if (other.CompareTag("bullet"))
         {
-            onContact();
+            
             //anim.Play("E_explodes_anim");
             Destroy(other.gameObject);
-            Destroy(this.gameObject,1.0f);
             player.AddScore(100.0f);
+            onContact();
         }
         if (other.CompareTag("shield"))
         {
-            onContact();
+            
             //must call player components not others'
             //player = null = other.transform.GetComponent<PlayerCont>() since other is the shield not player
             player.ShieldHit();
-            Destroy(this.gameObject,1.0f);
+            onContact();
         }
         if (other.CompareTag("ExternalForce")) {
             onContact();
-            Destroy(this.gameObject, 1.0f);
         }
 
     }
     void onContact() {
+        AudioSource newAud = Instantiate(DeathAudio);
+        newAud.volume = .5f;
+        newAud.pitch = .5f;
+        newAud.PlayOneShot(newAud.clip);
         anim.SetTrigger("onDeath");
         transform.GetComponent<BoxCollider2D>().enabled = false;
         _speed = 1.0f;
+        Destroy(this.gameObject,1.0f);
+        Destroy(newAud.gameObject, 3.2f);
     }
 }

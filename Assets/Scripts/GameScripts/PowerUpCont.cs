@@ -11,6 +11,7 @@ public class PowerUpCont : MonoBehaviour
     //1 = speed
     //2 = shields
     [SerializeField] int PuPId;
+    
     void Start()
     {
         
@@ -30,7 +31,9 @@ public class PowerUpCont : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
+           
             PlayerCont player = other.transform.GetComponent<PlayerCont>();
+
             if (player != null)
             {
                 switch (PuPId) {

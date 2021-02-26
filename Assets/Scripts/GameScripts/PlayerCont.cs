@@ -21,6 +21,9 @@ public class PlayerCont : MonoBehaviour
 
    //Fire
     [SerializeField] GameObject bullet;
+    [SerializeField] AudioSource LazerAudio;
+    [SerializeField] AudioSource PupAudio;
+
     [SerializeField] float _fireRate = 0.2f;
     [SerializeField] float _canfire = -1.0f;
     //TS
@@ -34,6 +37,8 @@ public class PlayerCont : MonoBehaviour
     //score
     float _playerScore=0.0f;
     [SerializeField] UiCont ui;
+
+    
 
 
     bool _speedBoostActive = false;
@@ -50,6 +55,7 @@ public class PlayerCont : MonoBehaviour
             Debug.LogError("no Spawn MGR");
         }
         anim = gameObject.GetComponent<Animator>();
+        
     }
     //[SerializeField] = allows teting controls without compromising strucure
    
@@ -72,13 +78,20 @@ public class PlayerCont : MonoBehaviour
         
         transform.Translate(new Vector3(_hInput,_vInput,_zInput)*_speed*_speedMult*Time.deltaTime);
         anim.SetFloat("playerMovement", _hInput);
-        Fire();
+        if (_lives>0)
+        {
+             Fire();
+        }
+       
         Wrapper();
         // check if player collider is on, life and shield life Debug.Log(this.transform.GetComponent<BoxCollider2D>().enabled+" "+_lives+_shieldHP);
         AddDifficulty();
         
 
     }
+
+
+
     void Wrapper() { 
         if (transform.position.x < -5.2f) {
             transform.position = new Vector3(5.2f,transform.position.y,transform.position.z); 
@@ -87,12 +100,12 @@ public class PlayerCont : MonoBehaviour
         {
             transform.position = new Vector3(-5.2f, transform.position.y, transform.position.z);
         }
-        if (transform.position.y < -4.0f) {
-            transform.position = new Vector3(transform.position.x, 4.0f, transform.position.z);
+        if (transform.position.y < -3.5f) {
+            transform.position = new Vector3(transform.position.x, 3.5f, transform.position.z);
         }
-        if (transform.position.y > 4.0f)
+        if (transform.position.y > 3.5f)
         {
-            transform.position = new Vector3(transform.position.x,-4.0f, transform.position.z);
+            transform.position = new Vector3(transform.position.x,-3.5f, transform.position.z);
         }
     }
     public void isAlive() {
@@ -118,8 +131,7 @@ public class PlayerCont : MonoBehaviour
         if (_lives <= 0)
         {
 
-            
-           
+            transform.GetComponent<BoxCollider2D>().enabled = false;
             for (int i = 0; i < transform.childCount; i++)
             {
                 GameObject child = transform.GetChild(i).gameObject;
@@ -128,7 +140,9 @@ public class PlayerCont : MonoBehaviour
                     child.SetActive(false);
                 }
             }
+
             _speed = 0;
+            
             anim.SetBool("onDeath", true);
             Destroy(this.gameObject,3.0f);
             //spawnCont.playerDeath();
@@ -142,6 +156,7 @@ public class PlayerCont : MonoBehaviour
             phurt.enabled = true;
         } 
         ui.DisplayLife(_lives);
+        
     }
    public void InstaDeath()
     {
@@ -149,23 +164,27 @@ public class PlayerCont : MonoBehaviour
         isAlive();
     }
     public void TripleShotActive() {
-
         _tripleShotActive = true;
+        AudioPlayer(PupAudio, 3.2f);
         StartCoroutine(PuPDuration());
+        
     }
     public void ShieldActive()
     {
+        
         _shieldActive = true;
         _shieldHP = 1;
         sh = Instantiate(Shield, transform.position, Quaternion.identity);
         this.transform.GetComponent<BoxCollider2D>().enabled = false;
         sh.transform.parent = this.transform;
+        AudioPlayer(PupAudio,3.2f);
         StartCoroutine(PuPDuration());
         
     }
     public void SpeedBoostActive()
     {
         _speedBoostActive = true;
+        AudioPlayer(PupAudio, 3.2f);
         StartCoroutine(PuPDuration());
     }
     public void TurnOffPuP() {
@@ -182,7 +201,7 @@ public class PlayerCont : MonoBehaviour
     }
     void Fire()
     {
-
+        
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > _canfire)
         {
             _canfire = Time.time + _fireRate;
@@ -194,9 +213,20 @@ public class PlayerCont : MonoBehaviour
             {
                 Instantiate(bullet, transform.position, Quaternion.identity);
             }
+            
+          AudioPlayer(LazerAudio,.75f);
+           
         }
         
 
+    }
+
+   void AudioPlayer(AudioSource aud,float audtime) {
+        //AudioSource newAud = Instantiate(aud);
+       /*newAud.PlayOneShot(newAud.clip);
+        Destroy(newAud.gameObject,audtime);*/
+        AudioSource.PlayClipAtPoint(aud.clip, transform.position);
+        
     }
     public void ShieldHit() {
 

@@ -15,7 +15,7 @@ public class UiCont : MonoBehaviour
     [SerializeField] Image hp;
     [SerializeField] GameObject gameOver;
    
-    bool c = true;
+    bool _playerDead;
     void Start()
     {
         //GameObject.Find() only works if GO is in the world *hint,hint* prefabs
@@ -27,7 +27,10 @@ public class UiCont : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameManager();
+        if (_playerDead)
+        {
+            GameManager();
+        }
     }
     public void DisplayLife(int lives) {
         if (lives <= 0)
@@ -47,7 +50,8 @@ public class UiCont : MonoBehaviour
     }
     
     IEnumerator GameOver() {
-        while (c) {
+        _playerDead = true;
+        while (_playerDead) {
              gameOver.SetActive(true);
              yield return new WaitForSeconds(1.0f);
              gameOver.SetActive(false);
@@ -58,7 +62,12 @@ public class UiCont : MonoBehaviour
      if (Input.GetKey(KeyCode.Space))
         {
             SceneManager.LoadScene(1);
+
         }
+     if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
     }
 
 }
