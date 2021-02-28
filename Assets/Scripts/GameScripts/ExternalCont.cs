@@ -50,6 +50,7 @@ public class ExternalCont : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            //AudioSource.PlayClipAtPoint(aud.clip, transform.position);
             AudioSource newAud = Instantiate(DeathAudio);
             newAud.volume = .5f;
             newAud.pitch = .8f;

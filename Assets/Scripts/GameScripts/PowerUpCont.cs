@@ -11,10 +11,11 @@ public class PowerUpCont : MonoBehaviour
     //1 = speed
     //2 = shields
     [SerializeField] int PuPId;
-    
+   
+
+
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -25,8 +26,8 @@ public class PowerUpCont : MonoBehaviour
         {
             Destroy(this.gameObject);   
         }
-        
     }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) 
@@ -53,5 +54,6 @@ public class PowerUpCont : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    
 
 }

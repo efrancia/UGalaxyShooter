@@ -56,7 +56,43 @@ public class SpawnCont : MonoBehaviour
         {
             yield return new WaitForSeconds(_timer);
             //good habit to assign new instance to a variable to edit.
-            GameObject newEnemy = Instantiate(Enemy, new Vector3(Random.Range(-5.0f, 5.0f), 4.0f, 5.0f), Quaternion.identity);
+            GameObject newEnemy = Instantiate(Enemy, new Vector3(Random.Range(-5.0f, 5.0f), 3.5f, 5.0f), Quaternion.identity);
+            EnemyCont setBooster = newEnemy.transform.GetComponent<EnemyCont>();
+            int isBooster = Random.Range(0, 100);
+            
+            switch (_timer)
+            {
+                case 1.0f:
+                    if (isBooster < 20)
+                    {
+                        setBooster.IsBooster(true);
+                    }
+                    
+                    break;
+                case .75f:
+                    if (isBooster < 40)
+                    {
+                        setBooster.IsBooster(true);
+
+                    }
+                    break;
+                case .5f:
+                    if (isBooster < 60)
+                    {
+
+                    }
+                    break;
+                case .25f:
+                    if (isBooster < 80)
+                    {
+                        setBooster.IsBooster(true);
+
+                    }
+                    break;
+                default:
+                    setBooster.IsBooster(false);
+                    break;
+            }
             //assigns the newly created objects to a proper container due to reuse
             newEnemy.transform.parent = enemyContainer.transform;   
         }
