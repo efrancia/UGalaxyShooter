@@ -9,24 +9,32 @@ public class UiCont : MonoBehaviour
     // Start is called before the first frame update
     
     
-    PlayerCont player;
+    [SerializeField] PlayerCont player;
     Text _scoreText;
     [SerializeField]Sprite[] _lives;
     [SerializeField] Image hp;
     [SerializeField] GameObject gameOver;
-   
+    [SerializeField] GameObject Pause;
     bool _playerDead;
     void Start()
     {
         //GameObject.Find() only works if GO is in the world *hint,hint* prefabs
         _scoreText = GameObject.Find("Score").GetComponent<Text>();
-        player = GameObject.Find("Player").GetComponent<PlayerCont>();
         _scoreText.text = "Score : ";
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.Space)&&!_playerDead)
+        {
+            
+            PauseMenu();
+        }
+        if (Input.GetKey(KeyCode.Escape)&&!_playerDead&&Pause.activeSelf)
+            {
+            ResumeGame();
+            }
         if (_playerDead)
         {
             GameManager();
@@ -50,6 +58,7 @@ public class UiCont : MonoBehaviour
     }
     
     IEnumerator GameOver() {
+
         _playerDead = true;
         while (_playerDead) {
              gameOver.SetActive(true);
@@ -68,6 +77,22 @@ public class UiCont : MonoBehaviour
             {
                 Application.Quit();
             }
+    }
+    void PauseMenu() {
+        Pause.SetActive(true);
+        Time.timeScale = 0f;
+    }
+    public void ResumeGame()
+    {
+        Pause.SetActive(false);
+        Time.timeScale = 1;
+    }
+    public void Settings()
+    {
+
+    }
+    public void QuitGame() {
+        Application.Quit();
     }
 
 }

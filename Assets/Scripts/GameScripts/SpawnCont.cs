@@ -11,13 +11,13 @@ public class SpawnCont : MonoBehaviour
     [SerializeField] GameObject SBPU;
     [SerializeField] GameObject SPU;
     [SerializeField] GameObject[] newPuP;
-
     [SerializeField] GameObject Asteroid;
-
+    GameObject[] newPlayers;
     bool keepSpawning = true;
     int PuPToSpawn;
     float _timer = 1.5f;
-
+    
+    
     
     // Start is called before the first frame update
     void Start()
@@ -36,6 +36,8 @@ public class SpawnCont : MonoBehaviour
     {
         
     }
+    
+   
     public IEnumerator AsteroidSpawn() {
 
         while (keepSpawning)

@@ -131,7 +131,7 @@ public class EnemyCont : MonoBehaviour
         Destroy(newAud.gameObject, 3.2f);
     }
     void ChargeBoost() {
-        transform.GetComponent<SpriteRenderer>().color = Color.blue + Color.black;
+        anim.SetBool("isBoosted", true);
     }
 
 }

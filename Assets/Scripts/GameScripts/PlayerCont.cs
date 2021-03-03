@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
+using UnityEngine.EventSystems;
+
 public class PlayerCont : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -45,9 +47,10 @@ public class PlayerCont : MonoBehaviour
     float _playerScore = 0.0f;
     [SerializeField] UiCont ui;
 
+    //background
+    [SerializeField] GameObject Bg;
 
-
-
+   
     void Start()
     {
         MeshRenderer mesh = GetComponent<MeshRenderer>();
@@ -80,22 +83,38 @@ public class PlayerCont : MonoBehaviour
         {
             _speedMult = 1;
         }
-
+        
         transform.Translate(new Vector3(_hInput, _vInput, 0) * _speed * _speedMult * Time.deltaTime);
+
+        BGOffset();
+
         anim.SetFloat("playerMovement", _hInput);
-        if (_lives > 0)
+        if (_lives > 0 )
         {
             Fire();
         }
-
+        
         Wrapper();
         // check if player collider is on, life and shield life Debug.Log(this.transform.GetComponent<BoxCollider2D>().enabled+" "+_lives+_shieldHP);
         AddDifficulty();
-
+        
 
     }
 
 
+    void BGOffset() { 
+      if ((_hInput < 0 && Bg.transform.position.x <= -0.5f) ||
+            (_hInput > 0 && Bg.transform.position.x >= 0.5f)|| 
+            (_vInput < 0 && Bg.transform.position.y <= -0.2f) ||
+            (_vInput > 0 && Bg.transform.position.y >= 0.2f))
+            {
+                Bg.transform.Translate(Vector3.zero);
+            }
+            else {
+               Bg.transform.Translate(new Vector3(_hInput, _vInput, 0) * _speed/35 * _speedMult * Time.deltaTime);
+            }
+    }
+  
 
     void Wrapper()
     {
@@ -291,4 +310,4 @@ public class PlayerCont : MonoBehaviour
 }
     
     
-
+//Debug.Break() pauses the application;
