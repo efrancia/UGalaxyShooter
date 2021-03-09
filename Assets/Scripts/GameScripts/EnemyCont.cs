@@ -119,8 +119,8 @@ public class EnemyCont : MonoBehaviour
     void onContact() {
         
         AudioSource newAud = Instantiate(DeathAudio);
-        newAud.volume = .5f;
-        newAud.pitch = .5f;
+        //newAud.volume = .5f;
+        //newAud.pitch = .5f;
         newAud.PlayOneShot(newAud.clip);
         anim.SetTrigger("onDeath");
         //transform.GetComponent<BoxCollider2D>().enabled = false;

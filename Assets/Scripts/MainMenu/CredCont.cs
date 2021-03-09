@@ -8,7 +8,7 @@ public class CredCont : MonoBehaviour
     RectTransform rt;
     int x = 0;
     int y = 0;
-    int z = 0;
+    
     void Start()
     {
         rt = GetComponent<RectTransform>();
@@ -57,7 +57,7 @@ public class CredCont : MonoBehaviour
             x = Random.Range(-1, 1);
             y = Random.Range(-1, 1);
         } while (x == 0 && y == 0);
-        z = 0;
+        
     }
     IEnumerator WaitBeforeRandom()
     {

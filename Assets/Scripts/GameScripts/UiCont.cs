@@ -15,6 +15,7 @@ public class UiCont : MonoBehaviour
     [SerializeField] Image hp;
     [SerializeField] GameObject gameOver;
     [SerializeField] GameObject Pause;
+    [SerializeField] GameObject settings;
     bool _playerDead;
     void Start()
     {
@@ -66,8 +67,10 @@ public class UiCont : MonoBehaviour
              gameOver.SetActive(false);
              yield return new WaitForSeconds(1.0f);
         }
+
      }
     void GameManager() { 
+
      if (Input.GetKey(KeyCode.Space))
         {
             SceneManager.LoadScene(1);
@@ -89,10 +92,12 @@ public class UiCont : MonoBehaviour
     }
     public void Settings()
     {
-
+        settings.SetActive(true);
+        Pause.SetActive(false);
     }
     public void QuitGame() {
         Application.Quit();
     }
+    
 
 }

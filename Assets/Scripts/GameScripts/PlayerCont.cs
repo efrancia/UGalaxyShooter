@@ -50,6 +50,8 @@ public class PlayerCont : MonoBehaviour
     //background
     [SerializeField] GameObject Bg;
 
+    //audio
+
    
     void Start()
     {
