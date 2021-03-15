@@ -45,6 +45,7 @@ public class PlayerCont : MonoBehaviour
 
     //score
     float _playerScore = 0.0f;
+    
     [SerializeField] UiCont ui;
 
     //background
@@ -255,10 +256,12 @@ public class PlayerCont : MonoBehaviour
 
     void AudioPlayer(AudioSource aud, float audtime)
     {
-        //AudioSource newAud = Instantiate(aud);
-        /*newAud.PlayOneShot(newAud.clip);
-         Destroy(newAud.gameObject,audtime);*/
-        AudioSource.PlayClipAtPoint(aud.clip, transform.position);
+        //plays a modified version of the audio clip
+        AudioSource newAud = Instantiate(aud, transform.position,Quaternion.identity);
+        newAud.PlayOneShot(newAud.clip);
+        Destroy(newAud.gameObject,audtime);
+
+        //AudioSource.PlayClipAtPoint(aud.clip, transform.position); *this plays unmodified original clip
 
     }
     public void ShieldHit()
@@ -279,6 +282,7 @@ public class PlayerCont : MonoBehaviour
             }
         }
     }
+
     public void AddScore(float point)
     {
         _playerScore += point;

@@ -13,18 +13,16 @@ public class SettingsCont : MonoBehaviour
     [SerializeField] GameObject l2settings;
 
     [SerializeField] GameObject l1settings;
-    [SerializeField]    Slider music;
+    [SerializeField] Slider music;
 
-    [SerializeField]    Slider effects;
+    [SerializeField] Slider effects;
     [SerializeField] GameObject backtopause;
     [SerializeField] GameObject Pause;
     
     void Start()
     {
-        
-        music.value = PlayerPrefs.GetFloat("BackgroundVolume");
-        effects.value = PlayerPrefs.GetFloat("DeathVolume");
 
+        CreateDefaultVolume();
         l1settings.SetActive(true);
         foreach (Transform child in l2settings.transform)
         {
@@ -33,7 +31,28 @@ public class SettingsCont : MonoBehaviour
         l2settings.SetActive(false);
         
     }
-
+    public void CreateDefaultVolume() {
+        if (PlayerPrefs.HasKey("BackgroundVolume") && PlayerPrefs.HasKey("EffectsVolume"))
+        {
+            music.value = PlayerPrefs.GetFloat("BackgroundVolume");
+            Music.volume = PlayerPrefs.GetFloat("BackgroundVolume");
+            effects.value = PlayerPrefs.GetFloat("EffectsVolume");
+            foreach (AudioSource x in Effects)
+            {
+                x.volume = PlayerPrefs.GetFloat("EffectsVolume");
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("BackgroundVolume", .5f);
+            PlayerPrefs.SetFloat("EffectsVolume", .5f);
+            Music.volume = PlayerPrefs.GetFloat("BackgroundVolume");
+            foreach (AudioSource x in Effects)
+            {
+                x.volume = PlayerPrefs.GetFloat("EffectsVolume");
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -48,8 +67,8 @@ public class SettingsCont : MonoBehaviour
        foreach (AudioSource x in Effects)
         {
             x.volume = effects.value;
-            PlayerPrefs.SetFloat(x.gameObject.name + "Volume", effects.value);
         }
+        PlayerPrefs.SetFloat("EffectsVolume", effects.value);
     }
     public void Volume() {
         l2settings.SetActive(true);

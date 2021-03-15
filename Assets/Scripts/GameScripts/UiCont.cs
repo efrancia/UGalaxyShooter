@@ -16,12 +16,25 @@ public class UiCont : MonoBehaviour
     [SerializeField] GameObject gameOver;
     [SerializeField] GameObject Pause;
     [SerializeField] GameObject settings;
+    [SerializeField] GameObject HScore;
+    
     bool _playerDead;
     void Start()
     {
+        
+        settings.GetComponent<SettingsCont>().CreateDefaultVolume();
+
         //GameObject.Find() only works if GO is in the world *hint,hint* prefabs
+        if (PlayerPrefs.HasKey("_highScore"))
+        {
+            HScore.GetComponent<Text>().text = "High Score: " + PlayerPrefs.GetFloat("_highScore");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("_highScore", 0);
+        }
         _scoreText = GameObject.Find("Score").GetComponent<Text>();
-        _scoreText.text = "Score : ";
+        _scoreText.text = "Score: ";
     }
 
     // Update is called once per frame
@@ -29,7 +42,6 @@ public class UiCont : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space)&&!_playerDead)
         {
-            
             PauseMenu();
         }
         if (Input.GetKey(KeyCode.Escape)&&!_playerDead&&Pause.activeSelf)
@@ -55,11 +67,17 @@ public class UiCont : MonoBehaviour
         }
     }
     public void DisplayScore(float pScore) {
-        _scoreText.text = "Score : " + pScore;
+        
+        _scoreText.text = "Score: " + pScore;
+        if (pScore>= PlayerPrefs.GetFloat("_highScore"))
+        {
+            PlayerPrefs.SetFloat("_highScore", pScore);
+            HScore.GetComponent<Text>().text = "High Score: "+ PlayerPrefs.GetFloat("_highScore");
+        }
     }
     
     IEnumerator GameOver() {
-
+        
         _playerDead = true;
         while (_playerDead) {
              gameOver.SetActive(true);

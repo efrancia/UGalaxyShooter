@@ -9,7 +9,7 @@ public class AudioCont : MonoBehaviour
     {
         foreach (Transform x in this.transform)
         {
-            x.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat(x.name + "Volume", 1);
+            x.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat(x.name + "Volume", .5f);
         }
     }
 
